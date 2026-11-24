@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "counts": {
+    "collections": 0,
+    "resources": 0,
+    "confirmed_ppt_files": null
+  },
+  "catalog": "catalog.json",
+  "csv": "catalog.csv",
+  "categories": "categories.json",
+  "collections": "collections.json",
+  "keywords": "keywords.json",
+  "guide": "AI-SEARCH.md"
+}

@@ -1,25 +1,17 @@
-# PPTBox · AI 助手检索
+# PPT-Box · AI 助手检索
 
-[返回首页](README.md)
+[返回首页](README.md) · [索引入口](manifest.json)
 
-适用于能够读取网页或仓库文件的 AI 助手。打开本页后，说明用途、设计风格、颜色、目标人群、页数和格式。若助手无法直接读取 GitHub，可把相关 JSON 文件下载并作为附件上传。
+豆包、百度搭子及其他 AI 助手可从 manifest.json 确认当前有效索引。GitHub 用于检索与导航，网盘分享保存实际文件。
 
-## 查找步骤
+1. 按用途、风格和收藏范围查看 categories.json、collections.json。分类只包含已有资源的分支。已知合集编号时，可从合集的 index 字段读取该合集资源。
+2. 优先读取分类索引，找不到分类时再读 catalog.json 或完整 catalog.csv。JSON 的 parts 如非空，请按其中的 path 加载分片；所有路径相对仓库根目录。
+3. 用资源名称、original_path 的原始路径片段、categories、各标签、scenario、keywords、synonyms 及 included_names 匹配。keywords.json 可按词与同义词找到资源编号。terms 内联为空时，可按 parts 的 first 和 last 选择分片。
+4. 按 resource_id 去重，优先列出真正匹配的精品项。查询跨合集时保留不同合集里的匹配项。
+5. 按 collection_id 分组。对于关联合集的记录，从 collections.json（内联 collections 或其 parts）取该编号的实际 share_url。每个合集只给一个网盘入口，逐项列出匹配资源名称和原始路径，提示「以下资源位于同一合集，无需重复转存」。
+6. original_path 是从根到项目的真实目录或文件名片段。按原字段顺序原样展示名称，不用虚拟分类代替。没有路径的独立资源只引用自身的真实链接，并标记其路径未登记。合集链接是整个合集的入口，不是单文件直链。
+7. 排除授权未确认或链接状态为 invalid、unavailable 的记录。pending 表示待人工检查。未匹配到结果或无法访问索引时直接说明。没有登记的数量、页数、风格和下载地址不得推测。
 
-1. 打开 [categories.json](categories.json)，按用途找到最贴近的三级分类 ID。每个分类的 `index` 字段指向分类索引。需求跨分类时可从二级分类查起。
-2. 打开分类索引。若 `parts` 为空，读取 `resources`。若存在 `parts`，按其 `path` 打开分片，读取每片的 `resources`。所有索引路径都相对于仓库根目录。无法确定分类时使用 [catalog.json](catalog.json) 或 [catalog.csv](catalog.csv)。
-3. 用 [keywords.json](keywords.json) 拓展用词。例如可同时匹配「毕业答辩」和「毕设答辩」。`aliases` 是词组，`terms` 将已收录的原词映射到资源编号。必要时同时检查 `name`、`scenario`、`keywords`、`synonyms` 和各标签。
-4. 以 `resource_id` 去重。优先筛选用户明确要求的分类、格式、页数、风格、颜色、人群和行业。优先推荐 `featured: true`，并可引用 `cover` 展示封面。
-5. 返回资源编号、名称、适用场景和原样的 `download_url`。确认 `authorized: true`。对 `pending` 标注待人工检查，对 `invalid` 或 `unavailable` 排除下载推荐。没有符合条件的资源时说明实际结果。
+每条结果需包含资源名称、所属网盘合集、原始文件夹路径和网盘分享入口。合集内多个命中合并，多个合集分别列出。
 
-## 可复制给助手的指令
-
-> 请在这个仓库的 AI-SEARCH.md 和目录索引中查找蓝色简约毕业答辩模板，优先推荐 PPTX 精品。按资源编号去重，列出名称、页数、链接状态以及索引中的原始夸克下载链接。没有匹配项时请直接说明。
-
-## 字段和分片
-
-- `categories` 是三级分类 ID 数组。同一编号可出现在多个分类查询结果中。
-- `styles`、`colors`、`audiences`、`industries`、`keywords` 和 `synonyms` 都是多值字段。
-- `source` 与 `license` 分别记录来源和公开授权说明。空页数表示未登记。
-- `valid` 表示人工确认有效，`pending` 表示待人工检查，`invalid` 表示人工确认失效，`unavailable` 表示分享页不可达。
-- 全库和分类 JSON 索引超过 500 条即按 500 条拆分。`catalog.csv` 保留完整记录供离线筛选。
+统计口径见 manifest.json。资源索引项与已确认 PPT 文件数是不同指标。confirmed_ppt_count 来自已读取的目录元数据，null 代表暂无可确认的数据。
