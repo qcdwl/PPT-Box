@@ -1,0 +1,9 @@
+* text=auto
+README.md text eol=lf
+AI-SEARCH.md text eol=lf
+catalog.csv text eol=lf
+*.json text eol=lf
+/browse/** text eol=lf
+/index/** text eol=lf
+*.webp binary
+*.png binary
